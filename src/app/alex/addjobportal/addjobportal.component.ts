@@ -46,7 +46,7 @@ export class AddjobportalComponent implements OnInit {
 
                    //   }
                    console.log('successfully deleted...');
-                   this.alertService.success("Job Portal is successfully saved");
+                   this.alertService.success("Portal is successfully saved");
                    setTimeout(() => {
                     this.alertService.clear();
                   }, 2000);
@@ -54,11 +54,8 @@ export class AddjobportalComponent implements OnInit {
                     
                  
                   error => {
-                    alert("Server error...");
-  
-                     // this.otherErrordialog = 'block';
-                     // this.loading = false;
-                  });
+                    this.alertService.success("Server error.");
+                 });
     this.dialogRef.close();
 }
 }

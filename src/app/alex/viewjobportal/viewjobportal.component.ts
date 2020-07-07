@@ -61,7 +61,7 @@ public countryList;
               if(data.status=="success"){
                 console.log('successfully updated...');
                 this.dialogRef.close();
-                this.alertService.success("Job Portal Successfully updated");
+                this.alertService.success("Portal Successfully updated");
                 setTimeout(() => {
                   this.alertService.clear();
                 }, 2000);

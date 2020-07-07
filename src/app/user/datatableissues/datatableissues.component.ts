@@ -84,7 +84,7 @@ export class DatatableissuesComponent implements OnInit {
   public dataList : any;
   dialogConfig = new MatDialogConfig();
   isDtInitialized:boolean = false
-
+  filterValueLocal : string;
   constructor( 
     private router: Router,
     private userService: UserService,
@@ -135,6 +135,7 @@ export class DatatableissuesComponent implements OnInit {
 }    
 */
   applyFilter(filterValue: string) {
+    this.filterValueLocal = filterValue;
     this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
@@ -142,7 +143,7 @@ export class DatatableissuesComponent implements OnInit {
   }
  
   refresh() {
-    console.log("before calling...ngOnInit......"); 
+    console.log("refresh"); 
     this.userService.load("all")
       .subscribe(
           data => {
@@ -157,6 +158,28 @@ export class DatatableissuesComponent implements OnInit {
           }
       );
   }
+
+
+  updateRefresh() {
+    console.log("updateRefresh"); 
+    this.userService.load("all")
+      .subscribe(
+          data => {
+              this.dataList = data;
+              this.dataSource = new MatTableDataSource(this.dataList);
+              this.dataSource.filter = this.filterValueLocal.trim().toLowerCase();
+              if (this.dataSource.paginator) {
+                this.dataSource.paginator.firstPage();
+              }
+              console.log("ngOnInit......4");
+         },
+          error => {
+              alert('Error !!!!');
+          }
+      );
+  }
+
+
 
   openDialogForAdd() {
   this.dialogConfig.disableClose = true;
@@ -187,7 +210,7 @@ console.log("JobportalComponent Id--->"+issueId);
     data: issueId,
     height: '80%'
   }).afterClosed().subscribe(result => {
-   this.refresh();
+   this.updateRefresh();
    });;
 }
 

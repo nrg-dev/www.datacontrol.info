@@ -165,7 +165,7 @@ export class ViewBank {
   styleUrls: ['./bank.component.css']
 })
 export class BankComponent implements OnInit {
-  displayedColumns: string[] = ['bankName','bankCountry','accountNumber','bankId'];
+  displayedColumns: string[] = ['bankName','bankCountry','accountNumber','bankEmailid','bankPhone','bankId'];
   dataSource: MatTableDataSource<any>; 
 
   @ViewChild(MatPaginator,{ static: true }) paginator: MatPaginator;
@@ -180,7 +180,7 @@ export class BankComponent implements OnInit {
   public dataList : any;
   dialogConfig = new MatDialogConfig();
   isDtInitialized:boolean = false
-
+  filterValueLocal:string;
   constructor( 
     private router: Router,
     private alexService: AlexService,
@@ -226,6 +226,7 @@ export class BankComponent implements OnInit {
 }    
 
   applyFilter(filterValue: string) {
+    this.filterValueLocal = filterValue;
     this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
@@ -249,6 +250,26 @@ export class BankComponent implements OnInit {
       );
   }
 
+  updateRefresh() {
+    console.log("updateRefresh"); 
+    this.alexService.loadBank()
+      .subscribe(
+          data => {
+              this.dataList = data;
+              this.dataSource = new MatTableDataSource(this.dataList);
+              this.dataSource.filter = this.filterValueLocal.trim().toLowerCase();
+              if (this.dataSource.paginator) {
+                this.dataSource.paginator.firstPage();
+              }
+              console.log("ngOnInit......4");
+         },
+          error => {
+              alert('Error !!!!');
+          }
+      );
+  }
+
+
   addNew() {
   this.dialogConfig.disableClose = true;
   this.dialogConfig.autoFocus = true;
@@ -260,13 +281,13 @@ export class BankComponent implements OnInit {
     height: '80%', 
   })
   .afterClosed().subscribe(result => {
-    this.refresh();
+    this.updateRefresh();
   });
     
 } 
  
 public viewData(bankid:number){
-console.log("Bank Id Component Id--->"+bankid);
+console.log("viewData");
   this.dialogConfig.disableClose = true;
   this.dialogConfig.autoFocus = true;
   this.dialogConfig.position = {
@@ -278,7 +299,7 @@ console.log("Bank Id Component Id--->"+bankid);
     data: bankid,
     height: '80%'
   }).afterClosed().subscribe(result => {
-   this.refresh();
+   this.updateRefresh();
    });;
 }
 

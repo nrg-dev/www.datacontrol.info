@@ -36,7 +36,7 @@ export class JobportalComponent implements OnInit {
   public dataList : any;
   dialogConfig = new MatDialogConfig();
   isDtInitialized:boolean = false
-
+  filterValueLocal: string;
   constructor( 
     private router: Router,
     private alexService: AlexService,
@@ -64,6 +64,8 @@ export class JobportalComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
+    console.log("Filter Value-->"+filterValue); 
+    this.filterValueLocal = filterValue;
     this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
@@ -87,6 +89,24 @@ export class JobportalComponent implements OnInit {
       );
   }
 
+  updaterefresh() {
+    console.log("before calling...ngOnInit......"); 
+    this.alexService.myPortaltable()
+      .subscribe(
+          data => {
+              this.dataList = data;
+              this.dataSource = new MatTableDataSource(this.dataList);
+              this.dataSource.filter = this.filterValueLocal.trim().toLowerCase();
+              if (this.dataSource.paginator) {
+                this.dataSource.paginator.firstPage();
+              }
+              console.log("ngOnInit......4");
+         },
+          error => {
+              alert('Error !!!!');
+          }
+      );
+  }
   addNew() {
   this.dialogConfig.disableClose = true;
   this.dialogConfig.autoFocus = true;
@@ -117,9 +137,9 @@ console.log("JobportalComponent Id--->"+portalId);
     data: portalId,
     height: '80%'
   }).afterClosed().subscribe(result => {
-   this.refresh();
-    
-   });;
+  this.updaterefresh();
+  //this.applyFilter(this.filterValueLocal);
+  });;
 }
 
   public downloadAsPDF() {

@@ -46,11 +46,20 @@
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
                     <td mat-cell *matCellDef="let row"> {{row.emailId1}} </td>
                   </ng-container>
+
+                  <ng-container matColumnDef="country">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Country </th>
+                    <td mat-cell *matCellDef="let row"> {{row.country}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="currentAddress">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Current Address </th>
+                    <td mat-cell *matCellDef="let row"> {{row.currentAddress}} </td>
+                  </ng-container>
                   
                   <ng-container matColumnDef="connectionId">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
                     <td mat-cell *matCellDef="let row"> 
-                      <button  (click)="viewData(row.connectionId)"> view/edit/delete</button>
+                      <button  (click)="viewData(row.connectionId)"> view</button>
                     </td>
                   </ng-container>
     

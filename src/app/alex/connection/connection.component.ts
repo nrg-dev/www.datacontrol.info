@@ -167,7 +167,7 @@ editRemove(value:string) {
   styleUrls: ['./connection.component.css']
 })
 export class ConnectionComponent implements OnInit {
-  displayedColumns: string[] = ['name','phoneNumber1','emailId1','connectionId'];
+  displayedColumns: string[] = ['name','phoneNumber1','emailId1','country','currentAddress','connectionId'];
   dataSource: MatTableDataSource<any>; 
 
   @ViewChild(MatPaginator,{ static: true }) paginator: MatPaginator;
@@ -181,6 +181,7 @@ export class ConnectionComponent implements OnInit {
   public dataList : any;
   dialogConfig = new MatDialogConfig();
   isDtInitialized:boolean = false
+  filterValueLocal: string;
 
   constructor( 
     private router: Router,
@@ -199,7 +200,7 @@ export class ConnectionComponent implements OnInit {
  
          },
           error => {
-              alert('Error !!!!');
+            this.alertService.error("Error!");
           }
       );
 
@@ -224,6 +225,7 @@ export class ConnectionComponent implements OnInit {
 }    
 
   applyFilter(filterValue: string) {
+    this.filterValueLocal = filterValue;
     this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
@@ -231,7 +233,7 @@ export class ConnectionComponent implements OnInit {
   }
  
   refresh() {
-    console.log("before calling...ngOnInit......"); 
+    console.log("refresh"); 
     this.alexService.loadConnection()
       .subscribe(
           data => {
@@ -239,13 +241,31 @@ export class ConnectionComponent implements OnInit {
               this.dataSource = new MatTableDataSource(this.dataList);
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
-              console.log("ngOnInit......4");
          },
           error => {
-              alert('Error !!!!');
+            this.alertService.error("Error!");
           }
       );
   }
+
+  updateRefresh() {
+    console.log("updateRefresh"); 
+    this.alexService.loadConnection()
+      .subscribe(
+          data => {
+              this.dataList = data;
+              this.dataSource = new MatTableDataSource(this.dataList);
+              this.dataSource.filter = this.filterValueLocal.trim().toLowerCase();
+              if (this.dataSource.paginator) {
+                this.dataSource.paginator.firstPage();
+              }
+         },
+          error => {
+            this.alertService.error("Error!");
+          }
+      );
+  }
+
 
   addNew() {
   this.dialogConfig.disableClose = true;
@@ -264,7 +284,7 @@ export class ConnectionComponent implements OnInit {
 } 
  
 public viewData(issueId:number){
-console.log("Connection Component Id--->"+issueId);
+console.log("viewData");
   this.dialogConfig.disableClose = true;
   this.dialogConfig.autoFocus = true;
   this.dialogConfig.position = {
@@ -276,7 +296,7 @@ console.log("Connection Component Id--->"+issueId);
     data: issueId,
     height: '80%'
   }).afterClosed().subscribe(result => {
-   this.refresh();
+   this.updateRefresh();   
    });;
 }
 

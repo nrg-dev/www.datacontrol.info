@@ -1,11 +1,14 @@
 * {
   font-family: sans-serif;
-  color:black;
-  background-color: white;
+  color:white;
+  background-color: #243c48;
   box-sizing: border-box;
 }
 
-
+::ng-deep .mat-dialog-container{
+  background-color: #243c48
+  !important;
+}
 
 /* Full-width input fields */
 input[type=text], input[type=password],textarea,select {
@@ -14,17 +17,17 @@ input[type=text], input[type=password],textarea,select {
   margin: 5px 0 22px 0;
   display: inline-block;
   border: none;
-  background: #f1f1f1;
-  color:black;
+  color:white;
 }
 
 /* Add a background color when the inputs get focus */
 input[type=text]:focus, input[type=password]:focus {
-  background-color: #ddd;
+  background-color: #243c48;
   outline: none;
-  color:black;
+  color:white;
 
 }
+
 
 /* Set a style for all buttons */
 button {
@@ -38,12 +41,12 @@ button {
 }
 
 #btnsave{
-  background-color:green;
+  background-color:#174FA6;
 
 }
 
 #btnclose{
-  background-color:black;
+  background-color:#174FA6;
 
 }
 
@@ -140,19 +143,19 @@ hr {
 }  
 
 #btnsave{
-  background-color:green;
+  background-color:#174FA6;
 
 }
 #btndel{
-  background-color: red;
+  background-color: #174FA6;
 
 }
 
 #btnupdate{
-  background-color:green;
+  background-color:#174FA6;
 
 }
 
 #btnclose{
-  background-color:black;
+  background-color:#174FA6;
 }
